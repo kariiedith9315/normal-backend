@@ -11,7 +11,7 @@ export class AlumnosController {
 
   @Get()
   findAll() {
-    return [];
+    return {message: "lista alumnos funca"};
   }
 
   @Get(':id')
