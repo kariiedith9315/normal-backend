@@ -1,32 +1,33 @@
-import {
-  IsAlphanumeric, IsEmail, IsNotEmpty, IsNumber, IsOptional,
-  IsPositive, IsString, Length, MaxLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsDateString, IsOptional } from 'class-validator';
 
 export class CreateProfesorDto {
   @IsString()
-  @IsNotEmpty()
-  @Length(2, 50)
+  @IsNotEmpty({ message: 'El nombre es obligatorio' })
   nombre: string;
 
   @IsString()
-  @IsNotEmpty()
-  @Length(2, 50)
+  @IsNotEmpty({ message: 'El apellido es obligatorio' })
   apellido: string;
 
-  @IsEmail()
+  @IsString()
+  @IsNotEmpty({ message: 'El DNI es obligatorio' })
+  dni: string;
+
+  @IsEmail({}, { message: 'El formato del email no es válido' })
   email: string;
 
-  @IsAlphanumeric()
-  @Length(4, 10)
-  legajo: string;
+  @IsOptional()
+  @IsString()
+  telefono?: string;
 
   @IsString()
-  @MaxLength(100)
+  @IsNotEmpty({ message: 'La especialidad es obligatoria' })
   especialidad: string;
 
   @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  sueldo?: number;
+  @IsString()
+  direccion?: string;
+
+  @IsDateString({}, { message: 'La fecha de ingreso debe tener un formato válido (YYYY-MM-DD)' })
+  fecha_ingreso: string;
 }
