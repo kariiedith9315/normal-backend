@@ -1,26 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto.js';
-import { UpdateAuthDto } from './dto/update-auth.dto.js';
+// src/modules/auth/auth.service.ts
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { LoginDto } from './dto/login.dto.js'; // Ajusta la ruta según tu archivo dto
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  login(dto: LoginDto) {
+    // Validación temporal de prueba (puedes adaptarla luego con tu base de datos)
+    if (dto.email === 'director@escuela.edu' && dto.password === '123456') {
+      return {
+        message: '¡Bienvenido al sistema!',
+        role: 'DIRECTOR',
+        token: 'fake-jwt-token-director-123',
+      };
+    }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    throw new UnauthorizedException('Credenciales incorrectas');
   }
 }

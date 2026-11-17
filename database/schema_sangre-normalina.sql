@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS alumnos;
 DROP TABLE IF EXISTS materias;
 DROP TABLE IF EXISTS tutores;
 DROP TABLE IF EXISTS profesores;
+DROP TABLE IF EXISTS usuarios;
 
 -- Tabla: Profesores
 CREATE TABLE profesores (
@@ -21,6 +22,15 @@ CREATE TABLE profesores (
     especialidad VARCHAR(100) NOT NULL,
     direccion VARCHAR(150),
     fecha_ingreso DATE NOT NULL
+);
+
+CREATE TABLE usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    rol ENUM('DIRECTOR', 'PROFESOR', 'ALUMNO', 'TUTOR') NOT NULL,
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabla: Tutores
