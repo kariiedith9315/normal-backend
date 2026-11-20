@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
+import { AlumnosModule } from '../../modules/alumnos/alumnos.module.js';
+import { DireccionModule } from '../../modules/direccion/direccion.module.js';
+import { ProfesoresModule } from '../../modules/profesores/profesores.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -15,6 +18,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: process.env.OBSERVE_APP_SECRET ?? 'YOUR_APP_SECRET',
       serviceId: 'normal-backend',
     }),
+    AlumnosModule,
+    DireccionModule,
+    ProfesoresModule,
   ],
   controllers: [AppController],
   providers: [AppService],
