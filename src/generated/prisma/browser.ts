@@ -17,4 +17,38 @@ import * as Prisma from './internal/prismaNamespaceBrowser.js'
 export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
-
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Tutor
+ * 
+ */
+export type Tutor = Prisma.TutorModel
+/**
+ * Model Alumno
+ * 
+ */
+export type Alumno = Prisma.AlumnoModel
+/**
+ * Model Profesor
+ * 
+ */
+export type Profesor = Prisma.ProfesorModel
+/**
+ * Model Materia
+ * 
+ */
+export type Materia = Prisma.MateriaModel
+/**
+ * Model Nota
+ * 
+ */
+export type Nota = Prisma.NotaModel
+/**
+ * Model Asistencia
+ * 
+ */
+export type Asistencia = Prisma.AsistenciaModel

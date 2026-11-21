@@ -58,4 +58,6 @@ pids
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-echo "src/generated" >> .gitignore
+/generated/prisma
+src/generated/prisma
+database/schema_sangre_normalina

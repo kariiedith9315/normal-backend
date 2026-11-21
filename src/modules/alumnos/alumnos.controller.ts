@@ -1,31 +1,46 @@
-import { Body, Controller, Get, Param, Patch, Post, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { AlumnosService } from './alumnos.service.js';
 import { CreateAlumnoDto } from './dto/create-alumno.dto.js';
 import { UpdateAlumnoDto } from './dto/update-alumno.dto.js';
 
 @Controller('alumnos')
 export class AlumnosController {
+  constructor(private readonly alumnosService: AlumnosService) {}
+
   @Post()
   create(@Body() dto: CreateAlumnoDto) {
-    return dto; // por ahora devuelve lo que recibe, para probar la validación
+    return this.alumnosService.create(dto);
   }
 
   @Get()
   findAll() {
-    return {message: "lista alumnos funca"};
+    return this.alumnosService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return { id };
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.alumnosService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateAlumnoDto) {
-    return { id, ...dto };
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateAlumnoDto,
+  ) {
+    return this.alumnosService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return { id };
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.alumnosService.remove(id);
   }
 }
