@@ -1,7 +1,7 @@
 // src/modules/auth/auth.service.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto.js'; // Ajusta la ruta según tu archivo dto
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service.js';
 
 @Injectable()
 export class AuthService {
