@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id_usuario Int     @id @default(autoincrement())
+  email      String  @unique
+  password   String
+  rol        String
+  activo     Boolean @default(true)
+}
+
+model Tutor {
+  id_tutor      Int      @id @default(autoincrement())
+  nombre        String
+  apellido      String
+  dni           String   @unique
+  email         String
+  telefono      String
+  fecha_ingreso DateTime @default(now())
+  alumnos       Alumno[]
+}
+
+model Alumno {
+  id_alumno        Int          @id @default(autoincrement())
+  nombre           String
+  apellido         String
+  dni              String       @unique
+  fecha_nacimiento String
+  telefono         String
+  id_tutor         Int?
+  tutor            Tutor?       @relation(fields: [id_tutor], references: [id_tutor])
+  notas            Nota[]
+  asistencias      Asistencia[]
+}
+
+model Profesor {
+  id_profesor   Int       @id @default(autoincrement())
+  nombre        String
+  apellido      String
+  dni           String    @unique
+  email         String    @unique
+  telefono      String
+  especialidad  String
+  direccion     String
+  fecha_ingreso DateTime  @default(now())
+  materias      Materia[]
+}
+
+model Materia {
+  id_materia  Int          @id @default(autoincrement())
+  nombre      String
+  horarios    String
+  id_profesor Int
+  profesor    Profesor     @relation(fields: [id_profesor], references: [id_profesor])
+  notas       Nota[]
+  asistencias Asistencia[]
+}
+
+model Nota {
+  id_nota    Int     @id @default(autoincrement())
+  id_alumno  Int
+  id_materia Int
+  trimestre  String
+  nota       Float
+  alumno     Alumno  @relation(fields: [id_alumno], references: [id_alumno])
+  materia    Materia @relation(fields: [id_materia], references: [id_materia])
+}
+
+model Asistencia {
+  id_asistencia Int     @id @default(autoincrement())
+  id_alumno     Int
+  id_materia    Int
+  fecha         String
+  estado        String
+  alumno        Alumno  @relation(fields: [id_alumno], references: [id_alumno])
+  materia       Materia @relation(fields: [id_materia], references: [id_materia])
+}
