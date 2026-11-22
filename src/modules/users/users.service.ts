@@ -1,83 +1,105 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 
-export interface User {
-  id_usuario: number;
-  email: string;
-  password: string;
-  rol: string;
-  activo: boolean;
-}
-
 @Injectable()
 export class UsersService {
-  private users: User[] = [
-    {
-      id_usuario: 1,
-      email: 'director@escuela.edu',
-      password: '123456',
-      rol: 'DIRECTOR',
-      activo: true,
-    },
-  ];
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return this.users;
+  async findAll() {
+    return this.prisma.user.findMany({
+      select: {
+        id_usuario: true,
+        email: true,
+        rol: true,
+        activo: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    const user = this.users.find((u) => u.id_usuario === id);
+  async findOne(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id_usuario: id },
+      select: {
+        id_usuario: true,
+        email: true,
+        rol: true,
+        activo: true,
+      },
+    });
+
     if (!user) {
       throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
     }
+
     return user;
   }
 
-create(dto: CreateUserDto) {
-    const nuevoUsuario: User = {
-      id_usuario: this.users.length + 1,
-      email: dto.email,
-      password: dto.password,
-      rol: dto.rol as string, // Aseguramos el tipo string si usas un enum
-      activo: true,
-    };
+  async create(dto: CreateUserDto) {
+    const existeEmail = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
 
-    this.users.push(nuevoUsuario);
-    
+    if (existeEmail) {
+      throw new ConflictException(`El email ${dto.email} ya está registrado`);
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    const nuevoUsuario = await this.prisma.user.create({
+      data: {
+        email: dto.email,
+        password: hashedPassword,
+        rol: dto.rol as string,
+        activo: true,
+      },
+    });
+
+    const { password, ...usuarioSinPassword } = nuevoUsuario;
+
     return {
-      message: 'Usuario creado exitosamente',
-      data: nuevoUsuario,
+      message: 'Usuario registrado exitosamente',
+      data: usuarioSinPassword,
     };
   }
 
-  update(id: number, dto: UpdateUserDto) {
-    const index = this.users.findIndex((u) => u.id_usuario === id);
-    if (index === -1) {
-      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+  async update(id: number, dto: UpdateUserDto) {
+    await this.findOne(id);
+
+    const dataToUpdate: any = {
+      ...(dto.email && { email: dto.email }),
+      ...(dto.rol && { rol: dto.rol as string }),
+    };
+
+    if (dto.password) {
+      dataToUpdate.password = await bcrypt.hash(dto.password, 10);
     }
 
-    this.users[index] = {
-      ...this.users[index],
-      ...dto,
-    };
+    const actualizado = await this.prisma.user.update({
+      where: { id_usuario: id },
+      data: dataToUpdate,
+    });
+
+    const { password, ...usuarioSinPassword } = actualizado;
 
     return {
       message: 'Usuario actualizado exitosamente',
-      data: this.users[index],
+      data: usuarioSinPassword,
     };
   }
 
-  remove(id: number) {
-    const index = this.users.findIndex((u) => u.id_usuario === id);
-    if (index === -1) {
-      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
-    }
+  async remove(id: number) {
+    await this.findOne(id);
 
-    const eliminado = this.users.splice(index, 1);
+    const eliminado = await this.prisma.user.delete({
+      where: { id_usuario: id },
+    });
+
     return {
       message: 'Usuario eliminado exitosamente',
-      data: eliminado[0],
+      data: eliminado,
     };
   }
 }

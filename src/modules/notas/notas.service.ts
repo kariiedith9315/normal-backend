@@ -1,30 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateNotaDto } from './dto/create-nota.dto.js';
 
 @Injectable()
 export class NotasService {
-  private notas = [
-    { id_nota: 1, id_alumno: 1, id_materia: 1, trimestre: '1° Trimestre', nota: 8 },
-  ];
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return this.notas;
+  async findAll() {
+    return this.prisma.nota.findMany({
+      include: {
+        alumno: true,
+        materia: true,
+      },
+    });
   }
 
-  findByAlumno(id_alumno: number) {
-    const resultado = this.notas.filter(n => n.id_alumno === id_alumno);
-    if (resultado.length === 0) {
+  async findByAlumno(id_alumno: number) {
+    const notas = await this.prisma.nota.findMany({
+      where: { id_alumno },
+      include: { materia: true },
+    });
+
+    if (notas.length === 0) {
       throw new NotFoundException(`No se encontraron notas para el alumno con ID ${id_alumno}`);
     }
-    return resultado;
+
+    return notas;
   }
 
-  create(dto: CreateNotaDto) {
-    const nuevaNota = {
-      id_nota: this.notas.length + 1,
-      ...dto,
-    };
-    this.notas.push(nuevaNota);
+  async create(dto: CreateNotaDto) {
+    const nuevaNota = await this.prisma.nota.create({
+      data: dto,
+    });
+
     return {
       message: 'Calificación registrada exitosamente',
       data: nuevaNota,

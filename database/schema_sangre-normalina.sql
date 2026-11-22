@@ -1,8 +1,6 @@
--- Crear base de datos solo si no existe (evita el Error 1007)
 CREATE DATABASE IF NOT EXISTS sangre_normalina;
 USE sangre_normalina;
 
--- Eliminar tablas en orden inverso para evitar conflictos si ya las habías creado a medias
 DROP TABLE IF EXISTS asistencias;
 DROP TABLE IF EXISTS notas;
 DROP TABLE IF EXISTS alumnos;
@@ -11,7 +9,6 @@ DROP TABLE IF EXISTS tutores;
 DROP TABLE IF EXISTS profesores;
 DROP TABLE IF EXISTS usuarios;
 
--- Tabla: Profesores
 CREATE TABLE profesores (
     id_profesor INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -33,7 +30,6 @@ CREATE TABLE usuarios (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla: Tutores
 CREATE TABLE tutores (
     id_tutor INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -44,7 +40,6 @@ CREATE TABLE tutores (
     fecha_ingreso DATE NOT NULL
 );
 
--- Tabla: Materias (id_profesor ahora es INT para coincidir perfectamente)
 CREATE TABLE materias (
     id_materia INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -54,7 +49,6 @@ CREATE TABLE materias (
         REFERENCES profesores(id_profesor) ON DELETE CASCADE
 );
 
--- Tabla: Alumnos
 CREATE TABLE alumnos (
     id_alumno INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -67,7 +61,6 @@ CREATE TABLE alumnos (
         REFERENCES tutores(id_tutor) ON DELETE CASCADE
 );
 
--- Tabla: Notas
 CREATE TABLE notas (
     id_nota INT AUTO_INCREMENT PRIMARY KEY,
     id_alumno INT NOT NULL,
@@ -81,7 +74,6 @@ CREATE TABLE notas (
         REFERENCES materias(id_materia) ON DELETE CASCADE
 );
 
--- Tabla: Asistencias
 CREATE TABLE asistencias (
     id_asistencia INT AUTO_INCREMENT PRIMARY KEY,
     id_alumno INT NOT NULL,
@@ -100,3 +92,39 @@ SELECT * FROM materias;
 SELECT * FROM alumnos;
 SELECT * FROM notas;
 SELECT * FROM asistencias;
+
+USE sangre_normalina;
+
+INSERT INTO Tutor (nombre, apellido, dni, email, telefono) VALUES
+('Jorge', 'Martín', '20111222', 'jorge.martin@gmail.com', '3816000001'),
+('Elena', 'Condori', '21222333', 'elena.condori@gmail.com', '3816000002'),
+('Marcos', 'González', '22333444', 'marcos.gonzalez@gmail.com', '3816000003'),
+('Silvia', 'Carrera', '23444555', 'silvia.carrera@gmail.com', '3816000004'),
+('Diego', 'Lazarte', '24555666', 'diego.lazarte@gmail.com', '3816000005');
+
+UPDATE Alumno SET id_tutor = 1 WHERE id_alumno = 1;
+UPDATE Alumno SET id_tutor = 2 WHERE id_alumno = 2;
+UPDATE Alumno SET id_tutor = 3 WHERE id_alumno = 3;
+UPDATE Alumno SET id_tutor = 4 WHERE id_alumno = 4;
+UPDATE Alumno SET id_tutor = 5 WHERE id_alumno = 5;
+
+INSERT INTO Materia (nombre, horarios, id_profesor) VALUES
+('Matemáticas', 'Lunes y Miércoles 08:00 - 09:20', 1),
+('Lengua y Literatura', 'Martes y Jueves 08:00 - 09:20', 2),
+('Historia', 'Lunes y Viernes 09:30 - 10:50', 3),
+('Biología', 'Miércoles y Viernes 11:00 - 12:20', 4),
+('Inglés', 'Martes y Jueves 09:30 - 10:50', 5);
+
+INSERT INTO Nota (id_alumno, id_materia, trimestre, nota) VALUES
+(1, 1, '1° Trimestre', 8.5),
+(2, 2, '1° Trimestre', 9.0),
+(3, 3, '1° Trimestre', 7.5),
+(4, 4, '1° Trimestre', 8.0),
+(5, 5, '1° Trimestre', 9.5);
+
+INSERT INTO Asistencia (id_alumno, id_materia, fecha, estado) VALUES
+(1, 1, '2026-11-10', 'Presente'),
+(2, 2, '2026-11-10', 'Presente'),
+(3, 3, '2026-11-11', 'Tardanza'),
+(4, 4, '2026-11-11', 'Justificado'),
+(5, 5, '2026-11-12', 'Presente');

@@ -1,11 +1,19 @@
-// src/modules/auth/auth.module.ts
+import 'dotenv/config';
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service.js';
+import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller.js';
-import { PrismaModule } from '../../prisma/prisma.module.js';
+import { AuthService } from './auth.service.js';
+import { UsersModule } from '../users/users.module.js';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    UsersModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET || 'clave_secreta_desarrollo',
+      signOptions: { expiresIn: '2h' },
+    }),
+  ],
   controllers: [AuthController],
   providers: [AuthService],
 })

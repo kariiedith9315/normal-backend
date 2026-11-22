@@ -51,7 +51,13 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-
+  User: 'User',
+  Tutor: 'Tutor',
+  Alumno: 'Alumno',
+  Profesor: 'Profesor',
+  Materia: 'Materia',
+  Nota: 'Nota',
+  Asistencia: 'Asistencia'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -68,4 +74,171 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const UserScalarFieldEnum = {
+  id_usuario: 'id_usuario',
+  email: 'email',
+  password: 'password',
+  rol: 'rol',
+  activo: 'activo'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const TutorScalarFieldEnum = {
+  id_tutor: 'id_tutor',
+  nombre: 'nombre',
+  apellido: 'apellido',
+  dni: 'dni',
+  email: 'email',
+  telefono: 'telefono',
+  fecha_ingreso: 'fecha_ingreso'
+} as const
+
+export type TutorScalarFieldEnum = (typeof TutorScalarFieldEnum)[keyof typeof TutorScalarFieldEnum]
+
+
+export const AlumnoScalarFieldEnum = {
+  id_alumno: 'id_alumno',
+  nombre: 'nombre',
+  apellido: 'apellido',
+  dni: 'dni',
+  fecha_nacimiento: 'fecha_nacimiento',
+  telefono: 'telefono',
+  id_tutor: 'id_tutor'
+} as const
+
+export type AlumnoScalarFieldEnum = (typeof AlumnoScalarFieldEnum)[keyof typeof AlumnoScalarFieldEnum]
+
+
+export const ProfesorScalarFieldEnum = {
+  id_profesor: 'id_profesor',
+  nombre: 'nombre',
+  apellido: 'apellido',
+  dni: 'dni',
+  email: 'email',
+  telefono: 'telefono',
+  especialidad: 'especialidad',
+  direccion: 'direccion',
+  fecha_ingreso: 'fecha_ingreso'
+} as const
+
+export type ProfesorScalarFieldEnum = (typeof ProfesorScalarFieldEnum)[keyof typeof ProfesorScalarFieldEnum]
+
+
+export const MateriaScalarFieldEnum = {
+  id_materia: 'id_materia',
+  nombre: 'nombre',
+  horarios: 'horarios',
+  id_profesor: 'id_profesor'
+} as const
+
+export type MateriaScalarFieldEnum = (typeof MateriaScalarFieldEnum)[keyof typeof MateriaScalarFieldEnum]
+
+
+export const NotaScalarFieldEnum = {
+  id_nota: 'id_nota',
+  id_alumno: 'id_alumno',
+  id_materia: 'id_materia',
+  trimestre: 'trimestre',
+  nota: 'nota'
+} as const
+
+export type NotaScalarFieldEnum = (typeof NotaScalarFieldEnum)[keyof typeof NotaScalarFieldEnum]
+
+
+export const AsistenciaScalarFieldEnum = {
+  id_asistencia: 'id_asistencia',
+  id_alumno: 'id_alumno',
+  id_materia: 'id_materia',
+  fecha: 'fecha',
+  estado: 'estado'
+} as const
+
+export type AsistenciaScalarFieldEnum = (typeof AsistenciaScalarFieldEnum)[keyof typeof AsistenciaScalarFieldEnum]
+
+
+export const SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+} as const
+
+export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const UserOrderByRelevanceFieldEnum = {
+  email: 'email',
+  password: 'password',
+  rol: 'rol'
+} as const
+
+export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
+export const TutorOrderByRelevanceFieldEnum = {
+  nombre: 'nombre',
+  apellido: 'apellido',
+  dni: 'dni',
+  email: 'email',
+  telefono: 'telefono'
+} as const
+
+export type TutorOrderByRelevanceFieldEnum = (typeof TutorOrderByRelevanceFieldEnum)[keyof typeof TutorOrderByRelevanceFieldEnum]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const AlumnoOrderByRelevanceFieldEnum = {
+  nombre: 'nombre',
+  apellido: 'apellido',
+  dni: 'dni',
+  fecha_nacimiento: 'fecha_nacimiento',
+  telefono: 'telefono'
+} as const
+
+export type AlumnoOrderByRelevanceFieldEnum = (typeof AlumnoOrderByRelevanceFieldEnum)[keyof typeof AlumnoOrderByRelevanceFieldEnum]
+
+
+export const ProfesorOrderByRelevanceFieldEnum = {
+  nombre: 'nombre',
+  apellido: 'apellido',
+  dni: 'dni',
+  email: 'email',
+  telefono: 'telefono',
+  especialidad: 'especialidad',
+  direccion: 'direccion'
+} as const
+
+export type ProfesorOrderByRelevanceFieldEnum = (typeof ProfesorOrderByRelevanceFieldEnum)[keyof typeof ProfesorOrderByRelevanceFieldEnum]
+
+
+export const MateriaOrderByRelevanceFieldEnum = {
+  nombre: 'nombre',
+  horarios: 'horarios'
+} as const
+
+export type MateriaOrderByRelevanceFieldEnum = (typeof MateriaOrderByRelevanceFieldEnum)[keyof typeof MateriaOrderByRelevanceFieldEnum]
+
+
+export const NotaOrderByRelevanceFieldEnum = {
+  trimestre: 'trimestre'
+} as const
+
+export type NotaOrderByRelevanceFieldEnum = (typeof NotaOrderByRelevanceFieldEnum)[keyof typeof NotaOrderByRelevanceFieldEnum]
+
+
+export const AsistenciaOrderByRelevanceFieldEnum = {
+  fecha: 'fecha',
+  estado: 'estado'
+} as const
+
+export type AsistenciaOrderByRelevanceFieldEnum = (typeof AsistenciaOrderByRelevanceFieldEnum)[keyof typeof AsistenciaOrderByRelevanceFieldEnum]
 
